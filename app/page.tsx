@@ -1,4 +1,3 @@
-// import DoughnutChart from "@/components/DoughnutChart";
 import LoginPage from "@/components/LoginPage";
 
 const Home = () => {

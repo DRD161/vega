@@ -1,11 +1,17 @@
-interface PricesInterface {
+export interface AssetsInterface {
+  id: string;
+  name: string;
+  type: string;
+}
+
+export interface PricesInterface {
   id: string;
   asset: string;
   price: number;
   asOf: string;
 }
 
-interface PositionsInterface {
+export interface PositionsInterface {
   id: number;
   asset: string;
   quantity?: number;
@@ -18,12 +24,6 @@ export interface PortfolioInterface {
   totalValue: number;
   asOf: string;
   positions: PositionsInterface[];
-}
-
-interface AssetsInterface {
-  id: string;
-  name: string;
-  type: string;
 }
 
 // Assets mock data

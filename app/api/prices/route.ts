@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(filteredPrices);
   } catch (error) {
-    console.error("Error fetching prices:", error); // Log the error
+    console.error("Error fetching prices:", error);
     return NextResponse.json(
       { error: "Failed to fetch prices" },
       { status: 500 },
