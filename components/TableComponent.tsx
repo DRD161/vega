@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import DateSelect from "@/components/DateSelect";
 import { PortfolioInterface, PositionsInterface } from "@/app/data/portfolio";
-import { fetchChartData, formatDate } from "@/lib/utils";
+import { fetchChartData, formatDate, formatCurrency } from "@/lib/utils";
 import { useEffect, useState, useMemo } from "react";
 
 interface TableProps {
@@ -22,19 +22,14 @@ const TableComponent = ({ data }: TableProps) => {
   const [tableData, setTableData] = useState<PositionsInterface[] | null>(null);
   const [totalValue, setTotalValue] = useState<string | null>(null);
 
-  const formatCurrency: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   useEffect(() => {
     if (!data) return;
 
-    const tablePositions = data.flatMap(
+    const tablePositions: PositionsInterface[] = data.flatMap(
       (portfolio: PortfolioInterface) => portfolio.positions,
     );
 
-    const sortedPositions = tablePositions.sort(
+    const sortedPositions: PositionsInterface[] = tablePositions.sort(
       (a: PositionsInterface, b: PositionsInterface) =>
         a.asset.localeCompare(b.asset),
     );
@@ -42,7 +37,7 @@ const TableComponent = ({ data }: TableProps) => {
     setTableData(sortedPositions);
   }, [data]);
 
-  const totalAssetValue = useMemo(() => {
+  const totalAssetValue: number | undefined = useMemo(() => {
     return tableData?.reduce((acc: number, { value }) => acc + value, 0);
   }, [tableData]);
 
@@ -72,7 +67,7 @@ const TableComponent = ({ data }: TableProps) => {
   return (
     <>
       {tableData && (
-        <div data-test="tableComponent">
+        <div className="w-full col-span-3">
           <DateSelect onDateChange={handleDateChange} />
 
           <Table>

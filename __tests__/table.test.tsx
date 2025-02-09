@@ -44,7 +44,7 @@ describe("TableComponent", () => {
     (fetchChartData as jest.Mock).mockResolvedValue(portfolios);
 
     render(<TableComponent data={portfolios} />);
-    screen.debug();
+
     // Flatten the asset data to count how many times each asset appears
     const assets = portfolios.flatMap((portfolio) =>
       portfolio.positions.map((position) => position.asset),
