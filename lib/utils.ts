@@ -27,3 +27,8 @@ export const formatDate = (date: string) => {
     month: "long",
   });
 };
+
+export const formatCurrency: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
