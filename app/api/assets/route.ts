@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { assets } from "@/app/data/mockData";
+import { assets } from "@/app/data/assets";
 
 export async function GET() {
   try {
