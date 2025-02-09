@@ -12,7 +12,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        blue: "#4b69d6",
+        blue: {
+          900: "#4b69d6",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
