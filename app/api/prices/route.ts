@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import { prices } from "@/app/data/prices";
+import { prices, PricesInterface } from "@/app/data/prices";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const asset = searchParams.get("asset");
     const asOf = searchParams.get("asOf");
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
 
-    let filteredPrices = prices;
+    let filteredPrices: PricesInterface[] = prices;
 
     if (asset) {
       const assets = asset.split(",");
@@ -19,12 +17,8 @@ export async function GET(request: Request) {
     }
 
     if (asOf) {
-      filteredPrices = filteredPrices.filter((price) => price.asOf === asOf);
-    }
-
-    if (from && to) {
       filteredPrices = filteredPrices.filter(
-        (price) => price.asOf >= from && price.asOf <= to,
+        (price: PricesInterface) => price.asOf === asOf,
       );
     }
 
