@@ -8,7 +8,7 @@ import {
   ChartData,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { PortfolioInterface } from "@/app/data/mockData";
+import { PortfolioInterface } from "@/app/data/portfolio";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -17,9 +17,8 @@ interface DoughnutProps {
 }
 
 const DoughnutChart = ({ data }: DoughnutProps) => {
-  const [DoughnutChartData, setDoughnutChartData] =
+  const [doughnutChartData, setDoughnutChartData] =
     useState<ChartData<"doughnut"> | null>(null);
-  // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Initialize asset totals
@@ -36,13 +35,12 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
       });
     });
 
-    // Prepare the chart data
     const chartData = {
       labels: Object.keys(assetTotals), // Asset names
       datasets: [
         {
           label: "Asset Value Breakdown",
-          data: Object.values(assetTotals), // Values for each asset
+          data: Object.values(assetTotals),
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(54, 162, 235, 0.2)",
@@ -64,35 +62,19 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
       ],
     };
     setDoughnutChartData(chartData);
-    // setDoughnutChartData(chartData);
-    // const fetchPortfolioData = async () => {
-    //   try {
-    //     const response = await fetch("/api/portfolio");
-    //
-    //     if (!response.ok) {
-    //       throw new Error("Failed to fetch portfolio data");
-    //     }
-    //
-    //     const data = await response.json();
-    //
-    //
-    //   } catch (error: unknown) {
-    //     if (error instanceof Error) {
-    //       setError(error.message);
-    //     } else {
-    //       setError("An unknown error occurred");
-    //     }
-    //   }
-    // };
-    //
-    // fetchPortfolioData();
-  }, []);
+  }, [data]);
 
-  // if (error) {
-  //   return <div>An error occurred: {error}</div>;
-  // }
-
-  return DoughnutChartData ? <Doughnut data={DoughnutChartData} /> : null;
+  return doughnutChartData ? (
+    <div>
+      <div className="mb-3">
+        <p className="text-lg font-bold">Portfolio Balance</p>
+        <p className="text-sm text-gray-500 italic">
+          Click an asset in the legend to view the balance for that asset
+        </p>
+      </div>
+      <Doughnut data={doughnutChartData} data-testid="doughnutChart" />
+    </div>
+  ) : null;
 };
 
 export default DoughnutChart;
