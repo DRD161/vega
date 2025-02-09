@@ -6,9 +6,11 @@ import {
   Tooltip,
   Legend,
   ChartData,
+  TooltipItem,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { PortfolioInterface } from "@/app/data/portfolio";
+import { formatCurrency } from "@/lib/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -21,25 +23,25 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
     useState<ChartData<"doughnut"> | null>(null);
 
   useEffect(() => {
-    // Initialize asset totals
-    const assetTotals: { [key: string]: number } = {};
+    if (!data) return;
 
-    // Loop through the fetched data to accumulate values for each asset
-    data?.forEach((portfolio: PortfolioInterface) => {
-      portfolio.positions.forEach((position) => {
-        if (assetTotals[position.asset]) {
-          assetTotals[position.asset] += position.value;
-        } else {
-          assetTotals[position.asset] = position.value;
-        }
-      });
+    // Find the latest date in the portfolio data
+    const latestPortfolio = data.reduce((latest, current) =>
+      new Date(latest.asOf) > new Date(current.asOf) ? latest : current,
+    );
+
+    // Get the positions (assets) for the latest date
+    const assetTotals: { [key: string]: number } = {};
+    latestPortfolio.positions.forEach((position) => {
+      assetTotals[position.asset] = position.value;
     });
 
+    // Prepare the chart data
     const chartData = {
       labels: Object.keys(assetTotals), // Asset names
       datasets: [
         {
-          label: "Asset Value Breakdown",
+          label: "Asset Value Breakdown (Latest Date)",
           data: Object.values(assetTotals),
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
@@ -61,18 +63,35 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
         },
       ],
     };
+
     setDoughnutChartData(chartData);
   }, [data]);
 
   return doughnutChartData ? (
     <div>
       <div className="mb-3">
-        <p className="text-lg font-bold">Portfolio Balance</p>
+        <p className="text-lg font-bold">Latest Portfolio Balance</p>
         <p className="text-sm text-gray-500 italic">
           Click an asset in the legend to view the balance for that asset
         </p>
       </div>
-      <Doughnut data={doughnutChartData} data-testid="doughnutChart" />
+      <div className="w-1/2">
+        <Doughnut
+          data={doughnutChartData}
+          options={{
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: (tooltipItem: TooltipItem<"doughnut">) => {
+                    const value: number = tooltipItem.raw as number;
+                    return `${tooltipItem.label}: ${formatCurrency.format(value)}`;
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </div>
     </div>
   ) : null;
 };
