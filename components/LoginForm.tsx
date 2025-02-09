@@ -36,7 +36,7 @@ const formSchema = z.object({
     }),
 });
 
-const LoginPage = () => {
+const LoginForm = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +75,7 @@ const LoginPage = () => {
   }, []);
 
   if (isLoading) {
-    return <Loader className="stroke-blue" size={50} />;
+    return <Loader className="stroke-blue-900" size={50} />;
   }
 
   return (
@@ -99,7 +99,11 @@ const LoginPage = () => {
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter username" {...field} />
+                        <Input
+                          className="focus-visible:ring-blue"
+                          placeholder="Enter username"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -112,13 +116,20 @@ const LoginPage = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter password" {...field} />
+                        <Input
+                          className="focus-visible:ring-blue"
+                          placeholder="Enter password"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button className="bg-blue" type="submit">
+                <Button
+                  className="font-bold bg-blue-900 focus-visible:ring-blue hover:bg-blue-500"
+                  type="submit"
+                >
                   Login
                 </Button>
               </form>
@@ -130,4 +141,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginForm;
