@@ -15,14 +15,7 @@ import {
   TimeScale,
   Filler,
 } from "chart.js";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import { formatDate, formatCurrency } from "@/lib/utils";
@@ -117,10 +110,14 @@ const LineChart = ({ data, portfolio }: LineChartProps) => {
   const [chartOptions, setChartOptions] =
     useState<ChartOptions<"line">>(defaultOptions);
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (data && portfolio) {
       // Get unique dates from the data
-      const labels: string[] = Array.from(new Set(data.map((item: PricesInterface) => item.asOf))).sort(
+      const labels: string[] = Array.from(
+        new Set(data.map((item: PricesInterface) => item.asOf)),
+      ).sort(
         (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime(),
       );
 
@@ -173,13 +170,44 @@ const LineChart = ({ data, portfolio }: LineChartProps) => {
       };
 
       setLineChartData(chartData);
+      setIsLoading(false);
     }
   }, [data, portfolio]);
 
   return (
-    <div className="col-start-6 col-span-10">
-      <Line options={chartOptions} data={lineChartData} />
-    </div>
+    <>
+      {!isLoading && (
+        <Card className="col-span-full md:col-start-6 md:col-span-10">
+          <CardHeader>
+            <CardTitle className="flex items-center text-lg font-bold">
+              Portfolio History
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-clock-4 ml-2 text-blue-900"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Line
+              className="w-full h-64"
+              options={chartOptions}
+              data={lineChartData}
+            />
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
 

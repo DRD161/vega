@@ -10,7 +10,7 @@ jest.mock("react-chartjs-2", () => ({
 }));
 
 describe("LineChart", () => {
-  it("renders the mocked Line chart with correct props", async () => {
+  it("renders the Line chart", async () => {
     render(<LineChart data={prices} portfolio={portfolios} />);
 
     await waitFor(() => {

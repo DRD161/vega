@@ -11,6 +11,13 @@ import {
 import { Doughnut } from "react-chartjs-2";
 import { PortfolioInterface } from "@/app/data/portfolio";
 import { formatCurrency } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -67,33 +74,60 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
     setDoughnutChartData(chartData);
   }, [data]);
 
-  return doughnutChartData ? (
-    <div className="w-full lg:w-96 col-start-1 col-span-12 lg:col-start-2 lg:col-span-4 row-start-1">
-      <div className="mb-3">
-        <p className="text-lg font-bold">Latest Portfolio Balance</p>
-        <p className="text-sm text-gray-500 italic">
-          Click an asset in the legend to view the balance for that asset
-        </p>
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem: TooltipItem<"doughnut">) => {
+            const value: number = tooltipItem.raw as number;
+            return `${tooltipItem.label}: ${formatCurrency.format(value)}`;
+          },
+        },
+      },
+    },
+  };
+
+  return (
+    doughnutChartData && (
+      <div className="col-span-full md:col-start-1 md:col-span-5 md:pr-6 mb-6 md:mb-0">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="flex items-center text-lg font-bold">
+              Latest Portfolio Balance
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-circle-dollar-sign ml-2 text-blue-900"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                <path d="M12 18V6" />
+              </svg>
+            </CardTitle>
+            <CardDescription className="text-sm text-gray-500 italic">
+              Click an asset in the legend to view the balance for that asset
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Doughnut
+              className="w-full h-64"
+              data={doughnutChartData}
+              options={chartOptions}
+            />
+          </CardContent>
+        </Card>
       </div>
-      <div>
-        <Doughnut
-          data={doughnutChartData}
-          options={{
-            plugins: {
-              tooltip: {
-                callbacks: {
-                  label: (tooltipItem: TooltipItem<"doughnut">) => {
-                    const value: number = tooltipItem.raw as number;
-                    return `${tooltipItem.label}: ${formatCurrency.format(value)}`;
-                  },
-                },
-              },
-            },
-          }}
-        />
-      </div>
-    </div>
-  ) : null;
+    )
+  );
 };
 
 export default DoughnutChart;
