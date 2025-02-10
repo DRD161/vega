@@ -9,6 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import DateSelect from "@/components/DateSelect";
 import { PortfolioInterface, PositionsInterface } from "@/app/data/portfolio";
 import { fetchChartData, formatDate, formatCurrency } from "@/lib/utils";
@@ -67,38 +75,45 @@ const TableComponent = ({ data }: TableProps) => {
   return (
     <>
       {tableData && (
-        <div className="w-full col-span-3">
-          <DateSelect onDateChange={handleDateChange} />
+        <Card className="col-start-1 col-span-12 lg:col-start-6 lg:col-span-7 row-start-1 p-4">
+          <CardHeader className="text-3xl">
+            <CardTitle>Positions Table</CardTitle>
+            <CardDescription>A list of your assets and totals.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DateSelect onDateChange={handleDateChange} />
 
-          <Table>
-            <TableCaption>A list of your assets and totals.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Asset</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Value</TableHead>
-                <TableHead>As Of</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {tableData.map((position, id) => (
-                <TableRow key={id}>
-                  <TableCell>{position.asset}</TableCell>
-                  <TableCell>{position.quantity}</TableCell>
-                  <TableCell>{formatCurrency.format(position.value)}</TableCell>
-                  <TableCell>{formatDate(position.asOf)}</TableCell>
+            <Table>
+              <TableHeader className="sticky w-full top-0">
+                <TableRow>
+                  <TableHead>Asset</TableHead>
+                  <TableHead>Quantity</TableHead>
+                  <TableHead>Value</TableHead>
+                  <TableHead>As Of</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter className="w-full">
-              <TableRow>
-                <TableCell colSpan={2}>Grand Total</TableCell>
-                <TableCell className="text-right">{totalValue}</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {tableData.map((position, id) => (
+                  <TableRow key={id}>
+                    <TableCell>{position.asset}</TableCell>
+                    <TableCell>{position.quantity}</TableCell>
+                    <TableCell>
+                      {formatCurrency.format(position.value)}
+                    </TableCell>
+                    <TableCell>{formatDate(position.asOf)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter className="w-full">
+                <TableRow>
+                  <TableCell colSpan={2}>Grand Total</TableCell>
+                  <TableCell>{totalValue}</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </CardContent>
+        </Card>
       )}
     </>
   );

@@ -14,10 +14,10 @@ const Dashboard = async () => {
     const pricesData = await fetchChartData("http://localhost:3000/api/prices");
 
     return (
-      <main className="grid auto-rows-auto items-center justify-items-center min-h-screen">
-        <section>
+      <main>
+        <section className="grid grid-cols-12 auto-rows-max pt-20 px-6">
           <DoughnutChart data={portfolioData} />
-          <TableComponent data={portfolioData} />
+          {/*<TableComponent data={portfolioData} />*/}
           <LineChart portfolio={portfolioData} data={pricesData} />
         </section>
       </main>

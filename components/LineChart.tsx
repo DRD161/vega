@@ -13,7 +13,16 @@ import {
   Title,
   Tooltip,
   TimeScale,
+  Filler,
 } from "chart.js";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import { formatDate, formatCurrency } from "@/lib/utils";
@@ -29,10 +38,12 @@ ChartJS.register(
   Tooltip,
   Legend,
   TimeScale,
+  Filler,
 );
 
 export const defaultOptions: ChartOptions<"line"> = {
   responsive: true,
+  maintainAspectRatio: false,
   clip: false,
   plugins: {
     legend: {
@@ -45,10 +56,9 @@ export const defaultOptions: ChartOptions<"line"> = {
     tooltip: {
       callbacks: {
         label: (context) => {
-          const value = context.raw as number; // Type assertion to ensure value is a number
+          const value = context.raw as number;
 
-          // Format the value using your formatCurrency function
-          return formatCurrency.format(value); // Format currency
+          return formatCurrency.format(value);
         },
       },
     },
@@ -62,10 +72,13 @@ export const defaultOptions: ChartOptions<"line"> = {
           day: "DD MM YYYY",
         },
       },
+      grid: {
+        display: false,
+      },
       ticks: {
         callback: (value) => {
           if (typeof value === "number") {
-            return formatDate(new Date(value).toISOString()); // Format date
+            return formatDate(new Date(value).toISOString());
           }
           return value;
         },
@@ -74,11 +87,14 @@ export const defaultOptions: ChartOptions<"line"> = {
     y: {
       type: "linear",
       min: 0,
+      grid: {
+        display: false,
+      },
       ticks: {
         stepSize: 1,
         callback: (value) => {
           if (typeof value === "number") {
-            return formatCurrency.format(value); // Format Y-axis currency
+            return formatCurrency.format(value);
           }
           return value;
         },
@@ -104,18 +120,16 @@ const LineChart = ({ data, portfolio }: LineChartProps) => {
   useEffect(() => {
     if (data && portfolio) {
       // Get unique dates from the data
-      const labels = Array.from(new Set(data.map((item) => item.asOf))).sort(
-        (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+      const labels: string[] = Array.from(new Set(data.map((item: PricesInterface) => item.asOf))).sort(
+        (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime(),
       );
 
-      // Aggregate portfolio values for each unique date
       const portfolioValues = labels.map((date) => {
         return portfolio
           .filter((portfolioItem) => portfolioItem.asOf === date)
           .reduce((acc, portfolioItem) => acc + portfolioItem.totalValue, 0);
       });
 
-      // Set dynamic max and min for the Y-axis
       const maxValue = Math.max(...portfolioValues);
       const minValue = Math.min(...portfolioValues);
       const range = maxValue - minValue;
@@ -146,9 +160,10 @@ const LineChart = ({ data, portfolio }: LineChartProps) => {
         {
           label: "Total Portfolio Value",
           data: portfolioValues,
-          borderColor: "rgb(75, 192, 192)",
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          fill: false,
+          lineTension: 0.2,
+          backgroundColor: "rgba(75, 105, 214, 0.5)",
+          opacity: "0.2",
+          fill: true,
         },
       ];
 
@@ -162,7 +177,9 @@ const LineChart = ({ data, portfolio }: LineChartProps) => {
   }, [data, portfolio]);
 
   return (
-    <Line className="w-full h-96" options={chartOptions} data={lineChartData} />
+    <div className="col-start-6 col-span-10">
+      <Line options={chartOptions} data={lineChartData} />
+    </div>
   );
 };
 

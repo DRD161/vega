@@ -68,14 +68,14 @@ const DoughnutChart = ({ data }: DoughnutProps) => {
   }, [data]);
 
   return doughnutChartData ? (
-    <div>
+    <div className="w-full lg:w-96 col-start-1 col-span-12 lg:col-start-2 lg:col-span-4 row-start-1">
       <div className="mb-3">
         <p className="text-lg font-bold">Latest Portfolio Balance</p>
         <p className="text-sm text-gray-500 italic">
           Click an asset in the legend to view the balance for that asset
         </p>
       </div>
-      <div className="w-1/2">
+      <div>
         <Doughnut
           data={doughnutChartData}
           options={{
