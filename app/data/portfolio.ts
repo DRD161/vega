@@ -13,7 +13,6 @@ export interface PortfolioInterface {
   positions: PositionsInterface[];
 }
 
-// Portfolio mock data
 export const portfolios: PortfolioInterface[] = [
   {
     id: "1",

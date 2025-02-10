@@ -1,5 +1,3 @@
-// app/data/prices.ts
-
 export interface PricesInterface {
   id: string;
   asset: string;
