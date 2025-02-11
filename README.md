@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -17,7 +15,8 @@ npm run test
 ```
 
 ### Logging in
-- In order to login and view the dashboard, enter the following credentials:
+
+- In order to log in and view the dashboard, enter the following credentials:
   - username: `admin`
   - password: `password123`
 
