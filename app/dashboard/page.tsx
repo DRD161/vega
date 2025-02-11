@@ -17,7 +17,7 @@ const Dashboard = async () => {
 
     return (
       <main>
-        <section className="grid grid-cols-12 auto-rows-max pt-20 px-20">
+        <section className="grid grid-cols-12 auto-rows-max pt-20 px-10 sm:px-20">
           <LogoutLink label="Logout" />
           <DoughnutChart data={portfolioData} />
           <LineChart portfolio={portfolioData} data={pricesData} />

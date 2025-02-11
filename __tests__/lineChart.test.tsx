@@ -4,7 +4,6 @@ import { prices } from "@/app/data/prices";
 import { portfolios } from "@/app/data/portfolio";
 import "@testing-library/jest-dom";
 
-// Mock the 'react-chartjs-2' library's Line component
 jest.mock("react-chartjs-2", () => ({
   Line: jest.fn(() => <div data-testid="line-chart-mock" />),
 }));

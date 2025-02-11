@@ -66,7 +66,7 @@ export const portfolios: PortfolioInterface[] = [
   },
   {
     id: "6",
-    totalValue: 35700, // Corrected total for 2024-07-21
+    totalValue: 35700,
     asOf: "2024-07-21",
     positions: [
       { id: 1, asset: "BTC", quantity: 1, value: 33000, asOf: "2024-07-21" },
@@ -76,7 +76,7 @@ export const portfolios: PortfolioInterface[] = [
   },
   {
     id: "7",
-    totalValue: 36000, // Corrected total for 2024-08-01
+    totalValue: 36000,
     asOf: "2024-08-01",
     positions: [
       { id: 1, asset: "BTC", quantity: 1, value: 32500, asOf: "2024-08-01" },

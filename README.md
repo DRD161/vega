@@ -16,6 +16,11 @@ To run tests:
 npm run test
 ```
 
+### Logging in
+- In order to login and view the dashboard, enter the following credentials:
+  - username: `admin`
+  - password: `password123`
+
 ## Tech Stack
 
 - [React](https://react.dev/)
